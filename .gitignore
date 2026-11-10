@@ -1,0 +1,53 @@
+# Variables de entorno
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+
+# Logs
+*.log
+
+# SSH
+**/.ssh/
+id_rsa
+id_rsa.pub
+authorized_keys
+known_hosts
+
+# Hadoop outputs
+output/
+tmp/
+part-r-*
+part-m-*
+_SUCCESS
+
+# Hadoop local files
+hadoop-*.tar.gz
+
+# Docker
+.docker/
+
+# VS Code
+.vscode/
+
+# IntelliJ / PyCharm
+.idea/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Mac
+.DS_Store
+
+ventas_125052638.csv
+*.csv

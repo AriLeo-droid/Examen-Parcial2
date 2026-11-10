@@ -1,0 +1,43 @@
+services:
+
+  hadoop:
+    build:
+      context: .
+      dockerfile: hadoop/Dockerfile
+    container_name: hadoop
+    volumes:
+      - ./ventas_125052638.csv:/data/input/ventas_125052638.csv:ro
+    networks:
+      - practica_net
+
+  db:
+    image: postgres:16
+    container_name: postgres_db
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - practica_net
+
+  api:
+    build:
+      context: ./api
+    container_name: api_crud
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - practica_net
+
+networks:
+  practica_net:
+    driver: bridge
+
+volumes:
+  postgres_data:
