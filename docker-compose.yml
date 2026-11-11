@@ -6,6 +6,9 @@ services:
       dockerfile: hadoop/Dockerfile
     container_name: hadoop
     volumes:
+      - ./resultados:/data/output
+      - ./scripts:/workspace/scripts
+      - ./mapreduce:/workspace/mapreduce
       - ./ventas_125052638.csv:/data/input/ventas_125052638.csv:ro
     networks:
       - practica_net
@@ -27,6 +30,8 @@ services:
       context: ./api
     container_name: api_crud
     volumes: 
+      - ./resultados:/data/output
+      - ./scripts:/workspace/scripts
       - ./ventas_125052638.csv:/data/input/ventas_125052638.csv:ro
     env_file:
       - .env

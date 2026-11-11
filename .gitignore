@@ -10,6 +10,9 @@ __pycache__/
 .venv/
 venv/
 
+# Resultados que se crean en hadoop
+resultados/
+
 # Logs
 *.log
 
