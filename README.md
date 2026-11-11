@@ -1,10 +1,10 @@
 # [NOMBRE DEL ALUMNO]
 
 **Matrícula:** 125052638  
-**Nombre del alumno**: Hernández Huerta Ari Leonardo
+**Alumno**: Hernández Huerta Ari Leonardo
 **Grupo:** IDIA222  
 **Materia:** Manejo Masivo de Datos  
-**Profesor:** José Javier Moya Moya  
+**Profesor:** Jose Javier Moya Moya  
 **Fecha:** 09/11/2026  
 
 ---
@@ -75,13 +75,13 @@ ventas_125052638.csv
 ## 1. Clonar el repositorio
 
 ```bash
-git clone <https://github.com/AriLeo-droid/Examen-Parcial2>
+git clone <URL_DEL_REPOSITORIO>
 ```
 
 Ingresar al proyecto:
 
 ```bash
-cd <Examen-Parcial2>
+cd <nombre_del_proyecto>
 ```
 
 ---
@@ -351,96 +351,100 @@ Ejecutar:
 ```bash
 time hadoop jar \
 $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
--input /data/input/ventas_1*5052638.csv \
--output /data/output*resultado \
--mapper "python3 mappe*.py" \
--reducer "python3 reducer.p*" \
+-input /data/input/ventas_125052638.csv \
+-output /data/output/resultado \
+-mapper "python3 mapper.py" \
+-reducer "python3 reducer.py" \
 -file mapper.py \
--file reduce*.py
+-file reducer.py
 ```
 
 ### Resultado obtenido
 
-`*`text
+```text
 real 1m21.531s
 ```
 
 ---
 
-## *onclusión de rendimiento
+## Conclusión de rendimiento
 
-En este *scenario, Hadoop Streaming obtuvo *n tiempo ligeramente menor (1m21.5*1s) que la solución secuencial*(1m26.295s). Esto se debe*a que el procesamiento se*realizó mediante las fases Map y R*duce, distribuyendo el trabajo de *gregación. Sin embargo, la diferen*ia fue pequeña porque el volumen d* datos aún es relativamente modera*o y se ejecutó sobre una sola máqu*na. A medida que aumentan el tamañ* del dataset y la cantidad de nodo* disponibles, Hadoop suele mostrar*ventajas más significativas frente*a una solución secuencial.
+En este escenario, Hadoop Streaming obtuvo un tiempo ligeramente menor (1m21.531s) que la solución secuencial (1m26.295s). Esto se debe a que el procesamiento se realizó mediante las fases Map y Reduce, distribuyendo el trabajo de agregación. Sin embargo, la diferencia fue pequeña porque el volumen de datos aún es relativamente moderado y se ejecutó sobre una sola máquina. A medida que aumentan el tamaño del dataset y la cantidad de nodos disponibles, Hadoop suele mostrar ventajas más significativas frente a una solución secuencial.
 
 ---
 
-#*Verificación de resultados Hadoop
-*Comprobar archivos generados:
+# Verificación de resultados Hadoop
 
-```*ash
+Comprobar archivos generados:
+
+```bash
 ls /data/output/resultado
 ```
-*Se deben observar:
+
+Se deben observar:
 
 ```text
-_SUCCE*S
+_SUCCESS
 part-00000
 ```
 
-Visualizar resul*ados:
+Visualizar resultados:
 
 ```bash
-head /data/output/r*sultado/part-00000
+head /data/output/resultado/part-00000
 ```
 
 ---
 
-# Car*a de resultados a PostgreSQL
+# Carga de resultados a PostgreSQL
 
-Entr*r al contenedor API:
-
-```bash
-dock*r exec -it api_crud bash
-```
-
-Ejec*tar:
+Entrar al contenedor API:
 
 ```bash
-python3 /workspace/s*ripts/cargar_resultados.py /data/o*tput/resultado/part-00000
+docker exec -it api_crud bash
 ```
 
----*
+Ejecutar:
+
+```bash
+python3 /workspace/scripts/cargar_resultados.py /data/output/resultado/part-00000
+```
+
+---
+
 # Validación mediante API REST
 
-A*rir el navegador:
+Abrir el navegador:
 
 ```text
 http://127.0.0.1:5000/resultados
 ```
 
-La A*I debe devolver los resultados alm*cenados en PostgreSQL en formato J*ON.
+La API debe devolver los resultados almacenados en PostgreSQL en formato JSON.
 
 ---
 
 # Preguntas teóricas
 
-##*1. Explica la diferencia entre los*modos standalone, pseudo-distribui*o y totalmente distribuido de Hado*p. ¿En cuál de ellos se usa HDFS?
-***Standalone:** Hadoop se ejecuta *omo una aplicación local sin demon*os ni servicios distribuidos. Se u*iliza principalmente para pruebas * desarrollo.
+## 1. Explica la diferencia entre los modos standalone, pseudo-distribuido y totalmente distribuido de Hadoop. ¿En cuál de ellos se usa HDFS?
 
-**Pseudo-distribuido*** Todos los servicios Hadoop se e*ecutan en una sola máquina, pero c*da demonio funciona como un proces* independiente. Permite probar el *omportamiento distribuido sin nece*idad de varios equipos.
+**Standalone:** Hadoop se ejecuta como una aplicación local sin demonios ni servicios distribuidos. Se utiliza principalmente para pruebas y desarrollo.
 
-**Totalme*te distribuido:** Hadoop se instal* en múltiples nodos físicos o virt*ales conectados por red. Cada serv*cio puede ejecutarse en máquinas d*stintas.
+**Pseudo-distribuido:** Todos los servicios Hadoop se ejecutan en una sola máquina, pero cada demonio funciona como un proceso independiente. Permite probar el comportamiento distribuido sin necesidad de varios equipos.
 
-**HDFS** se utiliza en l*s modos **pseudo-distribuido** y **totalmente distribuido**.
+**Totalmente distribuido:** Hadoop se instala en múltiples nodos físicos o virtuales conectados por red. Cada servicio puede ejecutarse en máquinas distintas.
+
+**HDFS** se utiliza en los modos **pseudo-distribuido** y **totalmente distribuido**.
 
 ---
 
-##*2. ¿Por qué el dataset se monta co*o volumen y no se copia dentro de *a imagen con COPY? Menciona al men*s dos razones.
+## 2. ¿Por qué el dataset se monta como volumen y no se copia dentro de la imagen con COPY? Menciona al menos dos razones.
 
-Montar el dataset *omo volumen permite cambiar o rege*erar el archivo sin reconstruir la*imagen Docker. Además, evita incor*orar archivos grandes al repositor*o y a las imágenes, reduciendo el *amaño de estas. También facilita c*mpartir el mismo dataset entre dis*intos contenedores y conservar la *eparación entre código y datos.
+Montar el dataset como volumen permite cambiar o regenerar el archivo sin reconstruir la imagen Docker. Además, evita incorporar archivos grandes al repositorio y a las imágenes, reduciendo el tamaño de estas. También facilita compartir el mismo dataset entre distintos contenedores y conservar la separación entre código y datos.
 
--*-
+---
 
-## 3. ¿Qué ocurre con los datos*de la base de datos al ejecutar do*ker compose down? ¿Y con docker compose down -v?
+## 3. ¿Qué ocurre con los datos de la base de datos al ejecutar docker compose down? ¿Y con docker compose down -v?
 
 Al ejecutar **docker compose down**, los contenedores son eliminados, pero los volúmenes persistentes permanecen, por lo que los datos de PostgreSQL se conservan. En cambio, **docker compose down -v** elimina también los volúmenes asociados, provocando la pérdida de los datos almacenados en ellos.
 
