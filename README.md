@@ -75,13 +75,13 @@ ventas_125052638.csv
 ## 1. Clonar el repositorio
 
 ```bash
-git clone <https://github.com/AriLeo-droid/Examen-Parcial2>
+git clone https://github.com/AriLeo-droid/Examen-Parcial2
 ```
 
 Ingresar al proyecto:
 
 ```bash
-cd <Examen-Parcial2>
+cd Examen-Parcial2
 ```
 
 ---
